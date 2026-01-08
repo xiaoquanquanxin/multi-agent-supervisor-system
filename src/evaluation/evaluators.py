@@ -1,12 +1,12 @@
 """
-Multi-Agent System Evaluation Framework
+多智能体系统评估框架
 
-This module implements three key evaluation criteria:
-1. Task Completion: Evaluates if the entire multi-agent system completed the requested tasks correctly
-2. Node Execution Path: Analyzes if agents were executed in the correct sequence
-3. Individual Node Execution: Checks specific node/agent performance
+本模块实现了三个关键评估标准：
+1. 任务完成：评估整个多智能体系统是否正确完成了请求的任务
+2. 节点执行路径：分析智能体是否按正确顺序执行
+3. 单个节点执行：检查特定节点/智能体性能
 
-Each evaluator returns a score (0.0-1.0) and detailed reasoning.
+每个评估器返回一个分数（0.0-1.0）和详细推理。
 """
 
 from typing import Dict
@@ -23,13 +23,13 @@ judge_llm = ChatOpenAI(
 
 async def evaluate_task_completion(run: Run, example: Example) -> Dict:
     """
-    Evaluation Criteria 1: Task Completion
+    评估标准1：任务完成
     
-    Evaluates if the multi-agent system as a whole completed all requested tasks correctly.
-    Considers:
-    - All required tasks were completed
-    - Tasks were done in logical order
-    - Final output matches requirements
+    评估多智能体系统作为整体是否正确完成了所有请求的任务。
+    考虑因素：
+    - 所有必需任务都已完成
+    - 任务按逻辑顺序完成
+    - 最终输出符合要求
     """
     try:
         # Extract actual sequence from run outputs
@@ -43,25 +43,25 @@ async def evaluate_task_completion(run: Run, example: Example) -> Dict:
         
         # Prepare instructions for the judge
         instructions = """
-        You are an evaluation judge. Given the actual sequence of agent actions and the expected sequence,
-        determine if the workflow completed all required tasks correctly.
+        您是一个评估判官。给定实际的智能体操作序列和预期序列，
+        确定工作流是否正确完成了所有必需的任务。
         
-        Consider:
-        1. Were all expected actions performed?
-        2. Were they performed in a logical order?
-        3. Did any unexpected or unnecessary actions occur?
+        考虑因素：
+        1. 是否执行了所有预期的操作？
+        2. 是否按逻辑顺序执行？
+        3. 是否发生了意外或不必要的操作？
         
-        Respond with either 'CORRECT' or 'INCORRECT', followed by a brief explanation.
+        请回复 '正确' 或 '错误'，然后给出简要解释。
         """
         
         # Prepare the comparison message
         comparison_msg = f"""
-        Original Request: {run.inputs.get('request', 'No request found')}
+        原始请求：{run.inputs.get('request', '未找到请求')}
         
-        EXPECTED SEQUENCE:
+        预期序列：
         {json.dumps(expected_sequence, indent=2)}
         
-        ACTUAL SEQUENCE:
+        实际序列：
         {json.dumps(actual_sequence, indent=2)}
         """
         
@@ -89,13 +89,13 @@ async def evaluate_task_completion(run: Run, example: Example) -> Dict:
 
 async def check_node_execution(run: Run, example: Example) -> Dict:
     """
-    Evaluation Criteria 2: Node Execution Path
+    评估标准2：节点执行路径
     
-    Analyzes the sequence of agent executions to verify correct workflow.
-    Checks:
-    - All necessary agents were involved
-    - Agents executed in correct order
-    - No unnecessary agent invocations
+    分析智能体执行序列以验证正确的工作流。
+    检查：
+    - 所有必要的智能体都参与了
+    - 智能体按正确顺序执行
+    - 没有不必要的智能体调用
     """
     try:
         judge_llm = ChatOpenAI(model="gpt-4", temperature=0)
@@ -158,12 +158,12 @@ async def check_node_execution(run: Run, example: Example) -> Dict:
 
 async def check_image_generation_node(run: Run, example: Example) -> Dict:
     """
-    Evaluation Criteria 3: Individual Node Execution
+    评估标准3：单个节点执行
     
-    Example of individual node evaluation, focusing on Image Generation Agent.
-    Verifies:
-    - If the specific agent was called
-    - Simple binary check of agent involvement
+    单个节点评估的示例，专注于图像生成智能体。
+    验证：
+    - 特定智能体是否被调用
+    - 智能体参与的简单二进制检查
     """
     try:
         judge_llm = ChatOpenAI(model="gpt-4", temperature=0)
