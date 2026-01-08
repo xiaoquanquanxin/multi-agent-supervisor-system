@@ -1,84 +1,84 @@
-# Multi-Agent System Evaluation Framework
+# 多智能体系统评估框架
 
-This framework implements a comprehensive evaluation strategy for multi-agent systems using three distinct criteria.
+该框架使用三个不同的标准为多智能体系统实现了综合评估策略。
 
-## Evaluation Criteria
+## 评估标准
 
-### 1. Task Completion Evaluation
-Assesses if the entire multi-agent system successfully completed all requested tasks.
-- Verifies all required tasks were completed
-- Checks task execution order
-- Validates final output against requirements
+### 1. 任务完成评估
+评估整个多智能体系统是否成功完成了所有请求的任务。
+- 验证所有必需任务是否完成
+- 检查任务执行顺序
+- 验证最终输出是否符合要求
 
-### 2. Node Execution Path Analysis
-Examines the interaction patterns and execution sequence of agents.
-- Confirms all necessary agents were involved
-- Validates execution order
-- Identifies any unnecessary agent invocations
+### 2. 节点执行路径分析
+检查智能体的交互模式和执行序列。
+- 确认所有必要的智能体都参与了
+- 验证执行顺序
+- 识别任何不必要的智能体调用
 
-### 3. Individual Node Evaluation
-Focuses on specific agent performance (example: Image Generation Agent).
-- Verifies individual agent execution
-- Checks specific agent functionality
-- Provides targeted performance insights
+### 3. 单个节点评估
+专注于特定智能体性能（示例：图像生成智能体）。
+- 验证单个智能体执行
+- 检查特定智能体功能
+- 提供有针对性的性能洞察
 
-## Running Evaluations
+## 运行评估
 
-From the project root directory, run:
+在项目根目录下运行：
 
 ```bash
 python -m src.evaluation.run_evaluation
 ```
 
-## Output Format
+## 输出格式
 
-The evaluation provides detailed scores and reasoning for each criterion:
+评估为每个标准提供详细的分数和推理：
 
 ```
-Evaluation Results by Criteria
+按标准分类的评估结果
 ==============================
 
-1️⃣ Task Completion Evaluation:
-   Score: 1.0
-   Analysis: All tasks completed successfully...
+1️⃣ 任务完成评估：
+   分数： 1.0
+   分析： 所有任务都成功完成...
 
-2️⃣ Node Execution Analysis:
-   Score: 1.0
-   Analysis: Agents executed in correct sequence...
+2️⃣ 节点执行分析：
+   分数： 1.0
+   分析： 智能体按正确顺序执行...
 
-3️⃣ Image Generation Node Check:
-   Score: 1.0
-   Analysis: Image Generation Agent called successfully...
+3️⃣ 图像生成节点检查：
+   分数： 1.0
+   分析： 图像生成智能体成功调用...
 ```
 
-## Implementation Details
+## 实现细节
 
-- Uses GPT-4 as evaluation judge
-- Provides scores from 0.0 to 1.0
-- Includes detailed reasoning for each score
-- Stores results in LangSmith for tracking
+- 使用 GPT-4 作为评估判官
+- 提供 0.0 到 1.0 的分数
+- 为每个分数包含详细推理
+- 将结果存储在 LangSmith 中进行跟踪
 
-## Components
+## 组件
 
-1. **Test Dataset** (`create_dataset.py`)
-   - Predefined test cases with expected outcomes
-   - Stored in LangSmith for tracking
+1. **测试数据集** (`create_dataset.py`)
+   - 预定义的测试用例和预期结果
+   - 存储在 LangSmith 中进行跟踪
 
-2. **Evaluators** (`evaluators.py`)
-   - GPT-4 powered evaluation functions
-   - Task completion checker
-   - Node execution analyzer
+2. **评估器** (`evaluators.py`)
+   - GPT-4 驱动的评估函数
+   - 任务完成检查器
+   - 节点执行分析器
 
-3. **Runner** (`run_evaluation.py`)
-   - Main evaluation script
-   - Results processing and display
-   - LangSmith integration
+3. **运行器** (`run_evaluation.py`)
+   - 主评估脚本
+   - 结果处理和显示
+   - LangSmith 集成
 
-## Project Structure
+## 项目结构
 ```
 evaluation/
-├── README.md           # This file
-├── evaluators.py       # Evaluation functions
-├── create_dataset.py   # Test dataset creation
-└── run_evaluation.py   # Main evaluation script
+├── README.md           # 本文件
+├── evaluators.py       # 评估函数
+├── create_dataset.py   # 测试数据集创建
+└── run_evaluation.py   # 主评估脚本
 ``` 

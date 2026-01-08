@@ -13,29 +13,29 @@ def create_supervisor_agent():
         temperature=SUPERVISOR_TEMPERATURE
     )
     
-    system_prompt = """You are a supervisor agent coordinating image processing tasks.
-    Based on the user's request and current state, determine which task should be executed next.
+    system_prompt = """您是一个协调图像处理任务的监督者智能体。
+    根据用户的请求和当前状态，确定下一个应该执行的任务。
     
-    Available tasks:
-    1. image_generation - When user needs to create a new image
-    2. text_overlay - When text needs to be added to an image
-    3. background_removal - When background needs to be removed from an image
+    可用任务：
+    1. image_generation - 当用户需要创建新图像时
+    2. text_overlay - 当需要在图像上添加文本时
+    3. background_removal - 当需要从图像中移除背景时
     
-    Rules:
-    - Process tasks in sequence until all requested operations are complete
-    - If the request mentions creating/generating an image, start with 'image_generation'
-    - After image generation, if text/caption is requested, use 'text_overlay'
-    - If the request mentions removing/deleting background, use 'background_removal'
-    - Only respond with '__end__' when all requested tasks are complete
-    - Consider both the original request and the current task state when deciding the next task
+    规则：
+    - 按顺序处理任务，直到所有请求的操作都完成
+    - 如果请求提到创建/生成图像，从 'image_generation' 开始
+    - 在图像生成后，如果请求了文本/标题，使用 'text_overlay'
+    - 如果请求提到移除/删除背景，使用 'background_removal'
+    - 只有在所有请求的任务都完成时才回复 '__end__'
+    - 在决定下一个任务时，要同时考虑原始请求和当前任务状态
     
-    Example sequences:
-    - "Generate an image and add text" → image_generation → text_overlay → __end__
-    - "Create an image, remove background, add text" → image_generation → background_removal → text_overlay → __end__
+    示例序列：
+    - "生成一张图片并添加文字" → image_generation → text_overlay → __end__
+    - "创建一张图片，移除背景，添加文字" → image_generation → background_removal → text_overlay → __end__
     """
 
     def supervisor_agent(state: AgentState) -> Command[Literal["image_generation", "text_overlay", "background_removal", "__end__"]]:
-        print("\n🎯 Supervisor Agent: Deciding next task...")
+        print("\n🎯 监督者智能体：决定下一个任务...")
         
         # Get the initial request if this is the first run
         messages = state["messages"]
@@ -45,10 +45,10 @@ def create_supervisor_agent():
         messages = [
             SystemMessage(content=system_prompt),
             HumanMessage(content=f"""
-            Original Request: {user_request}
-            Current Task: {state["current_task"]}
+            原始请求： {user_request}
+            当前任务： {state["current_task"]}
             
-            What should be the next task?
+            下一个任务应该是什么？
             """)
         ]
         
@@ -64,7 +64,7 @@ def create_supervisor_agent():
         else:
             next_agent = "__end__"
         
-        print(f"➡️ Next agent: {next_agent}")
+        print(f"➡️ 下一个智能体： {next_agent}")
         
         return Command(
             goto=next_agent,
@@ -72,7 +72,7 @@ def create_supervisor_agent():
                 "next_agent": next_agent,
                 "current_task": next_agent,
                 "messages": state["messages"] + [
-                    {"role": "system", "content": f"Supervisor: Routing to {next_agent}"}
+                    {"role": "system", "content": f"监督者：路由到 {next_agent}"}
                 ]
             }
         )

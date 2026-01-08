@@ -3,11 +3,11 @@ import os
 
 load_dotenv()
 
-# API Keys
+# API 密钥
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Agent Configuration
+# 智能体配置
 SUPERVISOR_MODEL = "gpt-4"
 SUPERVISOR_TEMPERATURE = 0
 
-# Other settings can be added here as needed
+# 其他设置可以根据需要在此添加

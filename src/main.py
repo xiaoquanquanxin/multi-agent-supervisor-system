@@ -34,7 +34,7 @@ def create_workflow():
     with open("workflow_graph.png", "wb") as f:
         f.write(graph_png)
     
-    print("\n📊 Graph visualization saved as 'workflow_graph.png'")
+    print("\n📊 图形可视化已保存为 'workflow_graph.png'")
     
     return graph
 
@@ -44,16 +44,16 @@ def main():
     
     # Check for OpenAI API key
     if not os.getenv("OPENAI_API_KEY"):
-        print("Error: OPENAI_API_KEY not found in environment variables")
+        print("错误：环境变量中未找到 OPENAI_API_KEY")
         return
 
     # Create the workflow
     workflow = create_workflow()
     
     # Get user input
-    print("\n🤖 Image Processing Multi-Agent System")
+    print("\n🤖 图像处理多智能体系统")
     print("----------------------------------------")
-    user_instruction = input("\nWhat would you like to do with the image?\n(e.g., 'Generate an image of a sunset and add text to it')\n\nYour request: ")
+    user_instruction = input("\n您希望对图像进行什么操作？\n(例如：'生成一张日落图片并在上面添加文字')\n\n您的请求：")
     
     # Initialize state
     initial_state = {
@@ -64,22 +64,22 @@ def main():
         "processed_image_url": None
     }
     
-    print("\n🚀 Starting workflow...")
+    print("\n🚀 启动工作流...")
     print("----------------------------------------")
     
     # Execute workflow
     final_state = workflow.invoke(initial_state)
     
     # Print results
-    print("\n✨ Workflow completed!")
+    print("\n✨ 工作流完成！")
     print("----------------------------------------")
-    print("\nExecution path:")
+    print("\n执行路径：")
     for msg in final_state["messages"]:
         # Handle both dict messages and Message objects
         content = msg.content if hasattr(msg, 'content') else msg.get('content', str(msg))
         print(f"- {content}")
     
-    print(f"\nFinal image URL: {final_state['processed_image_url']}")
+    print(f"\n最终图像URL：{final_state['processed_image_url']}")
 
 if __name__ == "__main__":
     main() 

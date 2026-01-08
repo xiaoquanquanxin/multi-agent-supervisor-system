@@ -8,10 +8,10 @@ def create_evaluation_dataset():
     # Just one test case
     test_cases = [
         {
-            "request": "Generate an image of a sunset and add 'Beautiful Evening' text",
+            "request": "生成一张日落图片并添加'美丽的夜晚'文字",
             "expected_sequence": [
-                "Image Generation Agent: Generated new image",
-                "Text Overlay Agent: Added text to image"
+                "图像生成智能体：已生成新图像",
+                "文本叠加智能体：已在图像上添加文字"
             ]
         }
     ]
@@ -22,12 +22,12 @@ def create_evaluation_dataset():
         for dataset in existing_datasets:
             if dataset.name == dataset_name:
                 client.delete_dataset(dataset_id=dataset.id)
-                print(f"Deleted existing dataset: {dataset_name}")
+                print(f"已删除现有数据集： {dataset_name}")
         
         # Create new dataset
         dataset = client.create_dataset(
             dataset_name=dataset_name,
-            description="Test cases for multi-agent image processing system"
+            description="多智能体图像处理系统的测试用例"
         )
         
         # Add examples to the dataset
@@ -37,9 +37,9 @@ def create_evaluation_dataset():
             outputs=[{"expected_sequence": case["expected_sequence"]} for case in test_cases]
         )
         
-        print(f"Created new dataset with {len(test_cases)} example(s)")
+        print(f"已创建新数据集，包含 {len(test_cases)} 个示例")
         return dataset
         
     except Exception as e:
-        print(f"Error creating dataset: {e}")
+        print(f"创建数据集时出错： {e}")
         return None 

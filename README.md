@@ -1,41 +1,41 @@
-# Multi-Agent Image Processing System
+# 多智能体图像处理系统
 
-A LangGraph-based system that coordinates multiple AI agents for image processing tasks using the Agent-Supervisor pattern.
+基于 LangGraph 的系统，使用智能体-监督者模式协调多个 AI 智能体执行图像处理任务。
 
-## Overview
+## 概述
 
-This project implements a multi-agent system based on LangGraph's Agent-Supervisor pattern, where a supervisor agent coordinates multiple specialized image processing agents. The system demonstrates the use of LangGraph's edgeless graph architecture and Command construct for agent coordination.
+本项目实现了基于 LangGraph 智能体-监督者模式的多智能体系统，其中监督者智能体协调多个专门的图像处理智能体。该系统展示了 LangGraph 的无边图架构和 Command 构造在智能体协调中的使用。
 
-### System Architecture
+### 系统架构
 
-![Workflow Graph](workflow_graph.png)
+![工作流图](workflow_graph.png)
 
-The system consists of:
+系统包含：
 
-1. **Supervisor Agent**
-   - Coordinates the workflow
-   - Makes intelligent decisions about task sequencing
-   - Routes requests to appropriate agents using LangGraph's Command construct
+1. **监督者智能体**
+   - 协调工作流程
+   - 对任务排序做出智能决策
+   - 使用 LangGraph 的 Command 构造将请求路由到适当的智能体
 
-2. **Task Agents**
-   - Image Generation Agent: Handles image creation requests
-   - Text Overlay Agent: Adds text to images
-   - Background Removal Agent: Removes image backgrounds
+2. **任务智能体**
+   - 图像生成智能体：处理图像创建请求
+   - 文本叠加智能体：在图像上添加文本
+   - 背景移除智能体：移除图像背景
 
-The graph visualization above shows:
-- The initial entry point (START) connecting to the Supervisor
-- The Supervisor node which coordinates all task agents
-- Task agent nodes for specific image processing operations
-- The potential paths through the system based on user requests
+上面的图形可视化显示了：
+- 连接到监督者的初始入口点（START）
+- 协调所有任务智能体的监督者节点
+- 用于特定图像处理操作的任务智能体节点
+- 基于用户请求通过系统的潜在路径
 
-### Key LangGraph Features Used
+### 使用的关键 LangGraph 特性
 
-1. **Edgeless Graph Architecture**
-   - Instead of explicit edges between nodes, routing is handled by agent Commands
-   - Each agent returns a Command that specifies the next agent to run
-   - Simplifies graph structure and makes it more flexible
+1. **无边图架构**
+   - 不使用节点间的显式边，而是通过智能体命令处理路由
+   - 每个智能体返回一个指定下一个要运行的智能体的命令
+   - 简化图结构并使其更加灵活
 
-2. **Command Construct**
+2. **Command 构造**
    ```python
    Command(
        goto="next_agent",
@@ -46,8 +46,8 @@ The graph visualization above shows:
        }
    )
    ```
-   - `goto`: Specifies the next agent to execute
-   - `update`: Updates the state that's passed between agents
+   - `goto`：指定要执行的下一个智能体
+   - `update`：更新在智能体之间传递的状态
 
 3. **StateGraph**
    ```python
@@ -55,117 +55,117 @@ The graph visualization above shows:
    builder.add_node("supervisor", create_supervisor_agent())
    builder.add_edge(START, "supervisor")
    ```
-   - Manages state transitions between agents
-   - Only requires initial edge from START to supervisor
+   - 管理智能体之间的状态转换
+   - 只需要从 START 到监督者的初始边
 
-## Setup
+## 安装
 
-1. Create a virtual environment:
+1. 创建虚拟环境：
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows 系统：venv\Scripts\activate
 ```
 
-2. Install dependencies:
+2. 安装依赖：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file with your OpenAI API key:
+3. 创建包含 OpenAI API 密钥的 `.env` 文件：
 
 ```
 OPENAI_API_KEY=your-key-here
 ```
 
-## Running the System
+## 运行系统
 
-From the project root directory, run:
+在项目根目录下运行：
 
 ```bash
 python -m src.main
 ```
 
-Example inputs to try:
-- "Generate an image of a sunset and add text 'Beautiful Evening' to it"
-- "Create an image of a mountain landscape and remove its background"
-- "Generate an image of a cat with 'Hello' text"
+示例输入：
+- "生成一张日落图片并在上面添加'美丽的夜晚'文字"
+- "创建一张山景图片并移除背景"
+- "生成一张猫的图片并添加'你好'文字"
 
-The system will:
-1. Take your input
-2. Use the supervisor to determine the sequence of tasks
-3. Route the request through appropriate agents
-4. Show the execution path and final result
+系统将：
+1. 接收您的输入
+2. 使用监督者确定任务序列
+3. 通过适当的智能体路由请求
+4. 显示执行路径和最终结果
 
-## Evaluation Framework
+## 评估框架
 
-The system includes an evaluation framework to assess the performance and correctness of the multi-agent workflow. 
+系统包含一个评估框架，用于评估多智能体工作流的性能和正确性。
 
-For detailed information about the evaluation framework, see [Evaluation Documentation](src/evaluation/README.md).
+有关评估框架的详细信息，请参阅[评估文档](src/evaluation/README.md)。
 
-## Project Structure
+## 项目结构
 
 ```
 image_processing_agents/
 ├── src/
 │   ├── agents/
-│   │   ├── supervisor.py      # Supervisor agent implementation
+│   │   ├── supervisor.py      # 监督者智能体实现
 │   │   ├── image_generation.py
 │   │   ├── text_overlay.py
 │   │   └── background_removal.py
-│   ├── evaluation/          # Evaluation framework
-│   │   ├── evaluators.py    # Evaluation functions
-│   │   ├── create_dataset.py # Test dataset creation
-│   │   └── run_evaluation.py # Main evaluation script
+│   ├── evaluation/          # 评估框架
+│   │   ├── evaluators.py    # 评估函数
+│   │   ├── create_dataset.py # 测试数据集创建
+│   │   └── run_evaluation.py # 主评估脚本
 │   ├── agent_types/
-│   │   └── state.py          # State type definitions
+│   │   └── state.py          # 状态类型定义
 │   ├── config/
-│   │   └── settings.py       # Configuration settings
-│   └── main.py              # Main execution script
-├── .env                     # Environment variables
+│   │   └── settings.py       # 配置设置
+│   └── main.py              # 主执行脚本
+├── .env                     # 环境变量
 ├── .gitignore
 └── requirements.txt
 ```
 
-## Implementation Details
+## 实现细节
 
-1. **State Management**
-   - Uses TypedDict for type-safe state management
-   - Tracks messages, current task, and image URLs
-   - Maintains execution history
+1. **状态管理**
+   - 使用 TypedDict 进行类型安全的状态管理
+   - 跟踪消息、当前任务和图像 URL
+   - 维护执行历史
 
-2. **Agent Communication**
-   - Agents communicate through state updates
-   - Each agent adds its actions to the message history
-   - Supervisor makes decisions based on complete context
+2. **智能体通信**
+   - 智能体通过状态更新进行通信
+   - 每个智能体将其操作添加到消息历史中
+   - 监督者基于完整上下文做出决策
 
-3. **Routing Logic**
-   - Supervisor analyzes both original request and current state
-   - Makes sequential decisions about task execution
-   - Uses LLM to understand complex requests
+3. **路由逻辑**
+   - 监督者分析原始请求和当前状态
+   - 对任务执行做出顺序决策
+   - 使用 LLM 理解复杂请求
 
-## Based On
-This implementation follows the LangGraph Agent-Supervisor tutorial:
-[LangGraph Multi-Agent Tutorial](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
+## 基于
+本实现遵循 LangGraph 智能体-监督者教程：
+[LangGraph 多智能体教程](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
 
-### Evaluation Components
+### 评估组件
 
-1. **Test Dataset**
-   - Predefined test cases with expected outcomes
-   - Stored in LangSmith for tracking and analysis
+1. **测试数据集**
+   - 预定义的测试用例和预期结果
+   - 存储在 LangSmith 中用于跟踪和分析
 
-2. **LLM Judge (GPT-4)**
-   - Evaluates task completion accuracy
-   - Analyzes agent execution patterns
-   - Provides detailed reasoning for scores
+2. **LLM 评判器 (GPT-4)**
+   - 评估任务完成准确性
+   - 分析智能体执行模式
+   - 为分数提供详细推理
 
-3. **Metrics**
-   - Task Completion Score (0.0 - 1.0)
-   - Node Execution Score (0.0 - 1.0)
-   - Execution Time
+3. **指标**
+   - 任务完成分数 (0.0 - 1.0)
+   - 节点执行分数 (0.0 - 1.0)
+   - 执行时间
 
-4. **Results Storage**
-   - Evaluation results are stored in LangSmith
-   - Detailed logs of agent interactions
-   - Performance metrics and analysis
+4. **结果存储**
+   - 评估结果存储在 LangSmith 中
+   - 智能体交互的详细日志
+   - 性能指标和分析

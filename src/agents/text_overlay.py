@@ -4,14 +4,14 @@ from ..agent_types.state import AgentState
 
 def create_text_overlay_agent():
     def text_overlay_agent(state: AgentState) -> Command[Literal["supervisor"]]:
-        print("\n✍️ Text Overlay Agent: Processing request...")
+        print("\n✍️ 文本叠加智能体：正在处理请求...")
         
         return Command(
             goto="supervisor",
             update={
                 "processed_image_url": "mock_text_overlay_image.jpg",
                 "messages": state["messages"] + [
-                    {"role": "system", "content": "Text Overlay Agent: Added text to image"}
+                    {"role": "system", "content": "文本叠加智能体：已在图像上添加文字"}
                 ]
             }
         )
